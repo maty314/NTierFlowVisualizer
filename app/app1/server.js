@@ -1,5 +1,3 @@
-// app/app1/server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const DataModel = require('./dataModel'); // Importar el modelo de datos
@@ -22,9 +20,13 @@ db.once('open', function() {
 });
 
 // Rutas
-app.post('/api/app1/data', (req, res) => {
-    const newData = new DataModel({ data: req.body.data }); // Crear una nueva instancia del modelo
-    newData.save((err) => {
+app.get('/api/app1', (req, res) => {
+    res.send('Hello from app1!');
+});
+
+app.post('/api/app1/data', async (req, res) => {
+    const data = new DataModel(req.body);
+    await data.save((err) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -33,18 +35,13 @@ app.post('/api/app1/data', (req, res) => {
     });
 });
 
-app.get('/api/app1/data', (req, res) => {
-    DataModel.find({}, (err, data) => {
-        if (err) {
-            res.status(500).send(err);
-        } else {
-            res.status(200).json(data);
-        }
-    });
+app.get('/api/app1/data', async (req, res) => {
+    const data = await DataModel.find();
+    res.send(data);
 });
 
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`App 1 listening at http://localhost:${port}`);
+    console.log(`App1 server is running on port ${port}`);
 });
 

@@ -1,3 +1,5 @@
+// app/app1/server.js
+
 const express = require('express');
 const mongoose = require('mongoose');
 const DataModel = require('./dataModel'); // Importar el modelo de datos
@@ -8,7 +10,7 @@ const port = 3000;
 app.use(express.json()); // Middleware para parsear JSON
 
 // Conexión a la base de datos MongoDB a través de HAProxy
-mongoose.connect('mongodb://haproxy:27017/app3db', {
+mongoose.connect('mongodb://haproxy:27017/app1db', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -20,13 +22,9 @@ db.once('open', function() {
 });
 
 // Rutas
-app.get('/api/app3', (req, res) => {
-    res.send('Hello from app3!');
-});
-
-app.post('/api/app3/data', async (req, res) => {
-    const data = new DataModel(req.body);
-    await data.save((err) => {
+app.post('/api/app1/data', (req, res) => {
+    const newData = new DataModel({ data: req.body.data }); // Crear una nueva instancia del modelo
+    newData.save((err) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -35,13 +33,18 @@ app.post('/api/app3/data', async (req, res) => {
     });
 });
 
-app.get('/api/app3/data', async (req, res) => {
-    const data = await DataModel.find();
-    res.send(data);
+app.get('/api/app1/data', (req, res) => {
+    DataModel.find({}, (err, data) => {
+        if (err) {
+            res.status(500).send(err);
+        } else {
+            res.status(200).json(data);
+        }
+    });
 });
 
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`App3 server is running on port ${port}`);
+    console.log(`App 1 listening at http://localhost:${port}`);
 });
 
