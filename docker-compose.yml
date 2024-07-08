@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:80"
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    networks:
+      - mynetwork
+
+  app1:
+    build:
+      context: ./app/app1
+    networks:
+      - mynetwork
+
+  app2:
+    build:
+      context: ./app/app2
+    networks:
+      - mynetwork
+
+  app3:
+    build:
+      context: ./app/app3
+    networks:
+      - mynetwork
+
+  haproxy:
+    build:
+      context: ./haproxy
+    ports:
+      - "27017:27017"
+    networks:
+      - mynetwork
+
+  mongo1:
+    build:
+      context: ./mongo/mongo1
+    ports:
+      - "27018:27017"
+    networks:
+      - mynetwork
+
+  mongo2:
+    build:
+      context: ./mongo/mongo2
+    ports:
+      - "27019:27017"
+    networks:
+      - mynetwork
+
+  mongo3:
+    build:
+      context: ./mongo/mongo3
+    ports:
+      - "27020:27017"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+

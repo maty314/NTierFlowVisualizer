@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NTierFlowVisualizer</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+}
+#output {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+</style>
+</head>
+<body>
+<h1>NTierFlowVisualizer</h1>
+<button onclick="sendRequest()">Send HTTP Request</button>
+<div id="output"></div>
+
+<script>
+async function sendRequest() {
+    try {
+        const response = await fetch('/api');
+        const text = await response.text();
+        document.getElementById('output').innerText = `Response from server: ${text}`;
+    } catch (error) {
+        document.getElementById('output').innerText = `Error: ${error}`;
+    }
+}
+</script>
+</body>
+</html>
+
