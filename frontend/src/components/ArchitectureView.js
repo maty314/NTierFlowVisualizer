@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './ArchitectureView.css';
 
 const ArchitectureView = () => {
   const [architectureData, setArchitectureData] = useState([]);
@@ -10,7 +11,7 @@ const ArchitectureView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('/api/architecture');
+      const response = await axios.get('http://localhost:3000/api/architecture');
       setArchitectureData(response.data);
     } catch (error) {
       console.error('Error fetching architecture data:', error);
@@ -22,9 +23,10 @@ const ArchitectureView = () => {
       <h2>Arquitectura de NTierFlowVisualizerV3</h2>
       <div className="architecture-diagram">
         {architectureData.map((component, index) => (
-          <div key={index} className="component">
+          <div key={index} className="component-card">
             <h3>{component.name}</h3>
-            <p>{component.status}</p>
+            <p>Status: {component.status}</p>
+            <p>{component.description}</p>
           </div>
         ))}
       </div>

@@ -45,3 +45,7 @@ app.listen(port, () => {
     console.log(`App3 server is running on port ${port}`);
 });
 
+app.get('/health', (req, res) => {
+    res.status(200).send('OK');
+});
+
